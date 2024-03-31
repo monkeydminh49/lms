@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { callGetDocumentsDetail } from "@/apis/documentsAPI";
 import React from 'react';
-import { Button, FloatButton, Space, Table, Tag , Tabs} from 'antd';
+import { Button, FloatButton, Space, Table, Tag, Tabs } from 'antd';
 import type { TableColumnsType, TableProps, TabsProps } from 'antd';
 import { DeleteOutlined, EditOutlined, FileAddOutlined } from '@ant-design/icons';
 
@@ -408,7 +408,6 @@ const DocumentPage = () => {
         str = str.replace(/\s+/g, '-');
         return str;
     }
-
     const search = (data: any, key: string) => {
         let result: any[] = [];
         data.forEach((element: any) => {
@@ -424,7 +423,6 @@ const DocumentPage = () => {
         }
         return result;
     }
-
     return (
         // divide into left side and right side
         // left side: giving statistics
@@ -473,8 +471,5 @@ const DocumentPage = () => {
             {floatButton()}
         </div>
     );
-
 }
-
-
 export default DocumentPage;
