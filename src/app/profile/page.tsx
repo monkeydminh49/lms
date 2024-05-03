@@ -7,6 +7,7 @@ import { ROLE_STUDENT } from "@/utils/constant";
 import Cropper from "@/components/Cropper";
 import { callGetPageFavoriteDocuments } from "@/apis/userAPI";
 import { formatDocumentTitle } from "@/app/library/[documentId]/page";
+import Link from "next/link";
 // import "./profile.scss";
 
 const Profile = () => {
@@ -72,6 +73,11 @@ const Profile = () => {
             <span className="font-headingText text-blue_5 mb-3 inline-block cursor-pointer font-semibold">
               Danh sách yêu thích
             </span>
+
+            <span className="font-headingText text-blue_5 mb-3 inline-block cursor-pointer font-semibold">
+              <Link href="/admin/document">Quản lý ngữ liệu</Link>
+            </span>
+ 
 
             <ul className="pl-2">
               {favoriteDocuments &&
