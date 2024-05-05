@@ -8,8 +8,8 @@ export const callChangeAvatar = (formData: FormData) => {
   instance.defaults.headers.common = {
     Authorization: `Bearer ${localStorage.getItem("token")}`,
     "Content-Type": "multipart/form-data",
-    // "Conten-Type": "application/json",
   };
+  console.log(formData.get("file"));
   return instance.post(`/users/update-avatar`, formData);
 };
 
@@ -34,8 +34,3 @@ export const callGetPageFavoriteDocuments = (
 export const callGetGroup = (groupId: number) => {
   return instance.get(`groups/${groupId}`);
 };
-
-// use for get all users
-export const callGetAllUsers =() =>{
-  return instance.get(`/users/all`);
-}

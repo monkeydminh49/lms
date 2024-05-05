@@ -16,7 +16,10 @@ const paths: Paths = {
   favoriteDocumentations: "favorite",
   sendVerificationEmail: "/verify-your-email",
   verifyEmail: "/verify-email",
-  accountManagement: "/account-management",
+  evaluation: "evaluation",
+  admin: "/admin",
+  createTest: "create-test",
+  uploadDocument: "upload-document",
 };
 
 export default paths;
