@@ -75,6 +75,8 @@ export const callGetPost = (postId: number) => {
   return instance.get(`posts/detail/${postId}`);
 };
 
+
 export const callGetAssignmentById = (assignmentId: number) => {
   return instance.get(`assignments/${assignmentId}`);
 };
+

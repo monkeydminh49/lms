@@ -14,6 +14,7 @@ interface Paths {
   favoriteDocumentations: string;
   sendVerificationEmail: string;
   verifyEmail: string;
+  accountManagement: string;
   evaluation: string;
   admin: string;
   createTest: string;

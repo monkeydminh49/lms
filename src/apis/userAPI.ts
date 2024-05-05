@@ -34,3 +34,11 @@ export const callGetPageFavoriteDocuments = (
 export const callGetGroup = (groupId: number) => {
   return instance.get(`groups/${groupId}`);
 };
+
+
+// use for get all users
+export const callGetAllUsers =() =>{
+  return instance.get(`/users/all`);
+}
+
+
