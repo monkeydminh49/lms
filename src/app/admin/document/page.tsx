@@ -3,11 +3,12 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { callGetDocumentsDetail } from "@/apis/documentsAPI";
+import { callGetDocumentsDetail, callDeleteDocumentById } from "@/apis/documentsAPI";
 import React from 'react';
 import { Button, FloatButton, Space, Table, Tag, Tabs } from 'antd';
 import type { TableColumnsType, TableProps, TabsProps } from 'antd';
 import { DeleteOutlined, EditOutlined, FileAddOutlined } from '@ant-design/icons';
+import { Allerta } from "next/font/google";
 
 interface DocumentHeader {
     id: string;
@@ -48,12 +49,30 @@ const DocumentPage = () => {
         };
         fetchData();
 
-    }
-        , []);
+    }, []);
 
     const onChange = (key: string) => {
         console.log(key);
     };
+
+    const handleDeleteDocumentById = async (event, documentId) => {
+        // alert(documentId)
+        event.stopPropagation();
+        let text = "Bạn có thực sự muốn xóa ngữ liệu không?";
+        if (confirm(text) == true) {
+            const res = await callDeleteDocumentById(documentId);
+            if (res.status == "ok") {
+                alert("Xóa ngữ liệu thành công!");
+                setData(data.filter((document) => document.id !== documentId));
+                setSearchResult(searchResult.filter((document) => document.id !== documentId));
+                //   // window.location.href = "/library";
+            } else {
+                alert("Xóa ngữ liệu thất bại! " + res.message);
+            }
+        } else {
+            text = "You canceled!";
+        }
+    }
 
     const getDataByType = (type: string) => {
         let dataByType: any[] = [];
@@ -116,7 +135,7 @@ const DocumentPage = () => {
             <FloatButton
                 icon={<FileAddOutlined />}
                 onClick={() => {
-                    router.push('/admin/document/create');
+                    router.push('/library/create-document');
                 }}
             />
         );
@@ -126,27 +145,27 @@ const DocumentPage = () => {
         let columns: TableColumnsType<never> | { title: string; dataIndex: string; key: string; width: string; render: (rank: number) => React.JSX.Element; }[] | undefined = [];
         if (type === 'topic') {
             columns = [
-                {
-                    title: '#',
-                    dataIndex: 'id',
-                    key: 'id',
-                    width: '5%',
-                    render: (id: number) => (
-                        <span>{id}</span>
-                    ),
-                },
+                // {
+                //     title: '#',
+                //     dataIndex: 'id',
+                //     key: 'id',
+                //     // width: '5%',
+                //     render: (id: number) => (
+                //         <span>{id}</span>
+                //     ),
+                // },
                 {
                     title: 'Topic',
                     dataIndex: 'topic',
                     key: 'topic',
-                    width: '30%',
-                    render: (text: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<React.AwaitedReactNode> | null | undefined) => <a>{text}</a>,
+                    // width: '10%',
+                    render: (text: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<React.AwaitedReactNode> | null | undefined) => <div className="text-wrap overflow-hidden text-xs">{text}</div>,
                 },
                 {
                     title: 'Total Documents',
                     dataIndex: 'totalDocuments',
                     key: 'totalDocuments',
-                    width: '15%',
+                    // width: '15%',
                     render: (totalDocuments: number) => (
                         <span>{totalDocuments}</span>
                     ),
@@ -155,7 +174,7 @@ const DocumentPage = () => {
                     title: 'Total Liked',
                     dataIndex: 'totalLiked',
                     key: 'totalLiked',
-                    width: '15%',
+                    // width: '15%',
                     render: (totalLiked: number) => (
                         <span>{totalLiked}</span>
                     ),
@@ -176,7 +195,7 @@ const DocumentPage = () => {
                     title: 'Author',
                     dataIndex: 'author',
                     key: 'author',
-                    width: '15%',
+                    // width: '15%',
                     render: (author: any) => (
                         <Space size="middle">
                             <span>{author.firstName}</span>
@@ -238,14 +257,16 @@ const DocumentPage = () => {
 
     const childrenTab: React.FC = (type) => {
         return (
-            <Table
-                columns={rankColumns(type as string)}
-                dataSource={getDataByType(type as string)}
-                rowKey={(record) => record.id}
-                // show only top 10 documents so unable to change page
-                pagination={false}
+            <div className="overflow-auto">
+                <Table
+                    columns={rankColumns(type as string)}
+                    dataSource={getDataByType(type as string)}
+                    rowKey={(record) => record.id}
+                    // show only top 10 documents so unable to change page
+                    pagination={false}
 
-            />
+                />
+            </div>
         );
     }
 
@@ -276,7 +297,7 @@ const DocumentPage = () => {
             title: 'ID',
             dataIndex: 'id',
             key: 'id',
-            width: '5%',
+            width: '7%',
             render: (id: string) => (
                 <span>{id}</span>
             ),
@@ -288,7 +309,7 @@ const DocumentPage = () => {
             title: 'Title',
             dataIndex: 'title',
             key: 'title',
-            width: '30%',
+            width: '33%',
             ellipsis: true,
             render: (text) => <a>{text}</a>,
         },
@@ -308,7 +329,7 @@ const DocumentPage = () => {
             title: 'Post Time',
             dataIndex: 'postTime',
             key: 'postTime',
-            width: '15%',
+            width: '10%',
             sorter: (a, b) => new Date(a.postTime).getTime() - new Date(b.postTime).getTime(),
             render: (postTime: string) => (
                 <span>{getDate(postTime)}</span>
@@ -367,21 +388,21 @@ const DocumentPage = () => {
             width: '0%',
             render: (text, record) => (
                 <Space size="middle">
-                    <Button
-                        type="primary"
-                        // center the icon
-                        className="flex items-center justify-center"
-                        onClick={() => router.push(`/admin/document/edit/${record.id}`)}
-                    >
-                        <EditOutlined />
-                    </Button>
+                    {/* <Button
+            type="primary"
+            // center the icon
+            className="flex items-center justify-center"
+            onClick={() => router.push(`/admin/document/edit/${record.id}`)}
+          >
+            <EditOutlined />
+          </Button> */}
 
                     <Button
                         type="primary"
                         danger
                         // center the icon
                         className="flex items-center justify-center"
-                        onClick={() => router.push(`/admin/document/delete/${record.id}`)}
+                        onClick={(event) => handleDeleteDocumentById(event, record.id)}
                     >
                         <DeleteOutlined />
                     </Button>
@@ -428,14 +449,14 @@ const DocumentPage = () => {
         // left side: giving statistics
         // right side: table of documents
         <div className="flex flex-row">
-            <div className="w-1/4">
+            <div className="w-[28%]">
                 <div className="flex flex-col">
                     <div className="rounded-lg bg-white shadow-lg p-4 mx-4">
                         {Raking(data)}
                     </div>
                 </div>
             </div>
-            <div className="w-3/4 position-relative r-0">
+            <div className="w-[72%] position-relative r-0">
                 <div className="rounded-lg bg-white shadow-lg p-4">
                     <div className="flex justify-center items-center m-4">
                         <input
