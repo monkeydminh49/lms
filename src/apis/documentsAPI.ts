@@ -29,6 +29,32 @@ export const callGetDocuments = (type: String | null, topic: String | null) => {
   return instance.get(`${documentUrl}`);
 };
 
+export const callGetDocumentsWithPaging = (
+  type: String | null,
+  topic: String | null,
+  page: number,
+  pageSize: number
+) => {
+  if (type != null && topic != null) {
+    return instance.get(
+      `${documentUrl}/page?type=${type}&topic=${topic}&pageSize=${pageSize}&page=${page}`
+    );
+  } else if (type != null) {
+    return instance.get(
+      `${documentUrl}/page?type=${type}&pageSize=${pageSize}&page=${page}`
+    );
+  } else if (topic != null) {
+    return instance.get(
+      `${documentUrl}/page?topic=${topic}&pageSize=${pageSize}&page=${page}`
+    );
+  }
+  return instance.get(`${documentUrl}/page?pageSize=${pageSize}&page=${page}`);
+};
+
+export const callDeleteDocumentById = (documentId: string) => {
+  return instance.delete(`${documentUrl}/${documentId}`);
+};
+
 export const callGetDocumentsDetail = (
   type: String | null,
   topic: String | null
@@ -63,4 +89,8 @@ export const callUnLikeDocument = (documentId: string) => {
     Authorization: `Bearer ${localStorage.getItem("token")}`,
   };
   return instance.put(`/users${documentUrl}/${documentId}/unlike`);
+};
+
+export const callGetDocumentCounselling = (documentId: number) => {
+  return instance.get(`documents/${documentId}/counsellings`);
 };
