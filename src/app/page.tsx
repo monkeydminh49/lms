@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import paths from "@/app/paths";
 import { ROLE_ADMIN } from "@/utils/constant";
 
+
 export default function Home() {
   const dispatch = useDispatch();
   const [avatar, setAvatar] = useState("");
@@ -22,7 +23,7 @@ export default function Home() {
   useEffect(() => {
     getAccount();
     user?.role === ROLE_ADMIN
-      ? router.push(paths.admin)
+      ? router.push(paths.adminHome)
       : router.push(paths.library);
   }, []);
 

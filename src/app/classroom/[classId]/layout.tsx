@@ -15,7 +15,7 @@ import {
   MdOutlineWork,
 } from "react-icons/md";
 import { FaPeopleLine } from "react-icons/fa6";
-import { ROLE_TEACHER } from "@/utils/constant";
+import { ROLE_ADMIN, ROLE_TEACHER } from "@/utils/constant";
 import { Tooltip } from "antd";
 import { PiListChecks } from "react-icons/pi";
 
@@ -34,7 +34,7 @@ const ClassroomLayout = ({ children }: { children: ReactNode }) => {
     getClassDetails();
   }, []);
   const currentClass = useSelector(
-    (state) => state.classes.currentClass.classInfo,
+    (state) => state.classes.currentClass.classInfo
   );
   return (
     <>
@@ -109,24 +109,6 @@ const ClassroomLayout = ({ children }: { children: ReactNode }) => {
                       <FaPeopleLine className={"h-6 w-6"} />
                     </Link>
                   </Tooltip>
-                  {user.role === ROLE_TEACHER && (
-                    <Tooltip
-                      className={
-                        "flex justify-center px-[2vw] border-black border-l-[1px] hover:bg-slate-200 cursor-pointer py-1"
-                      }
-                      placement="top"
-                      title={"Bài chờ duyệt"}
-                      color={"#367ff0"}
-                      arrow={false}
-                    >
-                      <Link
-                        href={`${paths.classroom}/${classId}/${paths.pendingPosts}`}
-                      >
-                        {/*Appending Posts*/}
-                        <MdChecklistRtl className={"h-6 w-6"} />
-                      </Link>
-                    </Tooltip>
-                  )}
                   <Tooltip
                     className={
                       "flex justify-center px-[2vw] border-black border-l-[1px] hover:bg-slate-200 cursor-pointer py-1"
@@ -177,6 +159,20 @@ const ClassroomLayout = ({ children }: { children: ReactNode }) => {
                           <FaHistory className={"h-6 w-6"} />
                         </Link>
                       </Tooltip>
+                      {user.role === ROLE_ADMIN && (
+                        <>
+                          <Tooltip
+                            className={
+                              "flex justify-center px-[2vw] border-black border-l-[1px] hover:bg-slate-200 cursor-pointer py-1"
+                            }
+
+                            placement="top"
+                            title={"Menu"}
+                            color={"#367ff0"}
+                            arrow={false}
+                          ></Tooltip>
+                        </>
+                      )}
                     </>
                   )}
                 </div>

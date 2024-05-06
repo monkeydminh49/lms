@@ -19,6 +19,7 @@ interface Paths {
   admin: string;
   createTest: string;
   uploadDocument: string;
+  adminHome: string;
 }
 
 export default Paths;

@@ -1,12 +1,12 @@
 "use client";
-import "./account.scss";
-import "bootstrap/dist/css/bootstrap.css";
-// import { removeDiacritics } from "diacritics";
-import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { callFetchUser, callDeleteAccount } from "@/apis/accountAPI";
 import { useRouter } from "next/navigation";
 import { InfoCircleOutlined, DeleteOutlined } from "@ant-design/icons";
+import { message, notification } from "antd";
+//import account.scss
+import "./account.scss";
+
 
 const AccountManagement = () => {
   const [accounts, setAccounts] = useState([]);
@@ -54,7 +54,7 @@ const AccountManagement = () => {
   const deleteAccount = async (id) => {
     try {
       await callDeleteAccount(id);
-      alert("Xóa tài khoản thành công");
+      message.success("Xóa tài khoản thành công!");
       fetchAccounts();
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -126,41 +126,24 @@ const AccountManagement = () => {
 
   return (
     <>
-      <div className="page_sider">
-        <ul>
-          <li>
-            <div>Quản lý tài khoản</div>
-          </li>
-          <li>
-            <div>Quản lý blog</div>
-          </li>
-          <li>
-            <div>Quản lý bài thi</div>
-          </li>
-        </ul>
-      </div>
       <div className="page_display">
         <div className="card mb-3">
           <div className="card-header"> Tìm kiếm tài khoản</div>
           <div className="card-body">
-            <div className="row">
-              <div className="col-9">
-                <input type="text" className="form-control" placeholder="Tìm kiếm bằng username" onChange={searchAccount} />
-              </div>
+            <div className="flex items-center">
+              <input type="text" className="form-control" placeholder="Tìm kiếm bằng username" onChange={searchAccount} />
             </div>
           </div>
         </div>
         <div className="card mb-3">
           <div className="card-header">Quản lý tài khoản</div>
           <div className="card-body">
-            <div className="row">
-              <div className="col-10">
-                <button className="btn btn-outline-secondary" onClick={(e) => filterAccount(e)}> Tất cả </button>
-                <button className="btn btn-outline-primary" onClick={(e) => filterAccount(e)}> Học Sinh </button>
-                <button className="btn btn-outline-info" onClick={(e) => filterAccount(e)}> Giáo viên </button>
-              </div>
+            <div className="flex items-center">
+              <button className="btn btn-outline-secondary mr-2" onClick={(e) => filterAccount(e)}> Tất cả </button>
+              <button className="btn btn-outline-primary mr-2" onClick={(e) => filterAccount(e)}> Học Sinh </button>
+              <button className="btn btn-outline-info" onClick={(e) => filterAccount(e)}> Giáo viên </button>
             </div>
-            <table className="table table-hover table-sm">
+            <table className="table table-hover table-sm mt-4">
               <thead>
                 <tr>
                   <th>STT</th>
@@ -197,3 +180,4 @@ const AccountManagement = () => {
 };
 
 export default AccountManagement;
+
